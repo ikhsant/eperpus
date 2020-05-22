@@ -11,17 +11,16 @@
                     </a>
                     <a href="index.php" class="list-group-item"><i class="fa fa-star"></i> Dashboard</a>
                     <?php if($_SESSION['akses_level'] == "admin"){ ?>
-                        <a href="pasien.php" class="list-group-item"><i class="fa fa-users"></i> Pasien</a>
-                        <a href="user.php" class="list-group-item"><i class="fa fa-users"></i> Pengguna</a>
-                    <a href="setting.php" class="list-group-item"><span class="glyphicon glyphicon-cog"></span> Setting</a>
+                        <a href="tamu.php" class="list-group-item"><i class="fa fa-users fa-fw"></i> Tamu</a>
+                        <a href="buku.php" class="list-group-item"><i class="fa fa-book fa-fw"></i> Buku</a>
+                        <a href="kategori.php" class="list-group-item"><i class="fa fa-bookmark fa-fw"></i> Kategori</a>
+                        <a href="pengarang.php" class="list-group-item"><i class="fa fa-user fa-fw"></i> Pengarang</a>
+                        <a href="rak.php" class="list-group-item"><i class="fa fa-bookmark fa-fw"></i> Rak</a>
+                        <a href="peminjaman.php" class="list-group-item"><i class="fa fa-bookmark fa-fw"></i> Peminjaman</a>
+                        <a href="setting.php" class="list-group-item"><span class="glyphicon glyphicon-cog fa-fw"></span> Setting</a>
                     <?php  } ?>
-                    <?php if($_SESSION['akses_level'] == "pegawai"){ ?>
-                        <a href="pasien.php" class="list-group-item"><i class="fa fa-users"></i> Pasien</a>
-                    <?php  } ?>
-                    <?php if($_SESSION['akses_level'] == "dokter"){ ?>
-                        <a href="pasien_dokter.php" class="list-group-item"><i class="fa fa-users"></i> Pasien</a>
-                    <?php  } ?>
-                    <a href="logout.php" class="list-group-item" onclick="return confirm('Yakin Keluar?')"><span class="glyphicon glyphicon-log-out"></span> Logout</a>
+
+                    <a href="logout.php" class="list-group-item" onclick="return confirm('Yakin Keluar?')"><span class="glyphicon glyphicon-log-out fa-fw"></span> Logout</a>
                 </div>
             </div>
             <div class="col-md-10">

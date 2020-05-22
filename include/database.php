@@ -2,7 +2,7 @@
 $servername = "localhost";
 $username = "root";
 $password = "";
-$database = "poliklinik";
+$database = "eperpus";
 
 // Membuat Koneksi
 $conn = mysqli_connect($servername,$username,$password,$database);
