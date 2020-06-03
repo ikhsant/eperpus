@@ -1,5 +1,8 @@
 <?php
 session_start();
+if ($_SESSION['akses_level']) {
+  header('Location: index.php');
+}
 require '../include/database.php';
 // query setting
 $setting = mysqli_fetch_assoc(mysqli_query($conn,'SELECT * FROM setting LIMIT 1'));
@@ -89,6 +92,7 @@ $setting = mysqli_fetch_assoc(mysqli_query($conn,'SELECT * FROM setting LIMIT 1'
      <input class="form-control" type="password" name="pass" placeholder="Masukan Password" required>
    </div>
      <button class="btn btn-primary" type="submit" name="submit" ><i class="fa fa-sign-in"></i> Login</button>
+     <a href="../index.php" class="btn btn-danger" type="submit" name="submit" ><i class="fa fa-home"></i> Home</button>
  </form>
 </body>
 </html>

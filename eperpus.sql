@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2020 at 11:57 AM
+-- Generation Time: Jun 03, 2020 at 02:09 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -81,11 +81,19 @@ CREATE TABLE `peminjaman` (
   `tamu` int(11) NOT NULL,
   `buku` int(11) NOT NULL,
   `tanggal_pinjam` date NOT NULL,
-  `tanggal_kembali` date NOT NULL,
+  `tanggal_kembali` date DEFAULT NULL,
   `lama_pinjaman` int(11) NOT NULL,
-  `denda` int(11) NOT NULL,
-  `keterangan_peminjaman` text NOT NULL
+  `denda` int(11) DEFAULT NULL,
+  `keterangan_peminjaman` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `peminjaman`
+--
+
+INSERT INTO `peminjaman` (`id_peminjaman`, `tamu`, `buku`, `tanggal_pinjam`, `tanggal_kembali`, `lama_pinjaman`, `denda`, `keterangan_peminjaman`) VALUES
+(3, 4, 1, '2020-06-03', '2020-06-04', 2, 100000, 'Keperluan Skripsi'),
+(4, 5, 1, '2020-06-04', NULL, 3, NULL, 'fasfasf');
 
 -- --------------------------------------------------------
 
@@ -158,6 +166,14 @@ CREATE TABLE `tamu` (
   `kelas` varchar(255) NOT NULL,
   `tanggal_kunjungan` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
+
+--
+-- Dumping data for table `tamu`
+--
+
+INSERT INTO `tamu` (`id_tamu`, `nama`, `kelas`, `tanggal_kunjungan`) VALUES
+(4, 'YULIANI PUTRI', 'ts19a', '2020-06-03 13:09:19'),
+(5, 'ADE ABDULLAH', 'ts19a', '2020-06-03 13:59:15');
 
 -- --------------------------------------------------------
 
@@ -261,7 +277,7 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `pengarang`
@@ -279,7 +295,7 @@ ALTER TABLE `rak`
 -- AUTO_INCREMENT for table `tamu`
 --
 ALTER TABLE `tamu`
-  MODIFY `id_tamu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_tamu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
 
 --
 -- AUTO_INCREMENT for table `user`

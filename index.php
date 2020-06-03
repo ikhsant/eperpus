@@ -1,5 +1,7 @@
 <?php
 include 'include/database.php';
+session_start();
+
 
 if (isset($_GET['kategori'])) {
   $nama_kategori = $_GET['kategori'];
@@ -18,6 +20,19 @@ $query_buku = mysqli_query($conn,"
   $where");
 
 $query_kategori = mysqli_query($conn,"SELECT * FROM kategori");
+
+if (isset($_POST['submit_peminjaman'])) {
+  $tamu                  = $_POST['tamu'];
+  $buku                  = $_POST['buku'];
+  $tanggal_pinjam        = $_POST['tanggal_pinjam'];
+  $lama_pinjaman         = $_POST['lama_pinjaman'];
+  $keterangan_peminjaman = $_POST['keterangan_peminjaman'];
+
+  mysqli_query($conn,"INSERT INTO peminjaman (tamu,buku,tanggal_pinjam,lama_pinjaman,keterangan_peminjaman) VALUES ('$tamu','$buku','$tanggal_pinjam','$lama_pinjaman','$keterangan_peminjaman') ");
+
+  header('Location: index.php?detail='.$id_buku);
+}
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -70,12 +85,13 @@ $query_kategori = mysqli_query($conn,"SELECT * FROM kategori");
     </div>
     <div class="collapse navbar-collapse" id="myNavbar">
       <ul class="nav navbar-nav">
-        <li class="active"><a href="?">Home</a></li>
+        <li class="active"><a href="index.php">Home</a></li>
         <?php foreach ($query_kategori as $kategori): ?>
-          <li><a href="?kategori=<?= $kategori['nama_kategori'] ?>"><?= $kategori['nama_kategori'] ?></a></li>
+          <li><a href="index.php?kategori=<?= $kategori['nama_kategori'] ?>"><?= $kategori['nama_kategori'] ?></a></li>
         <?php endforeach ?>
       </ul>
       <ul class="nav navbar-nav navbar-right">
+        <li><a href="buku_tamu.php"><span class="fa fa-book"></span> Buku Tamu</a></li>
         <li><a href="admin/login.php"><span class="fa fa-sign-in"></span> Login</a></li>
       </ul>
     </div>
@@ -107,7 +123,7 @@ $query_kategori = mysqli_query($conn,"SELECT * FROM kategori");
           <div class="col-sm-8">
             <div class="panel panel-primary">
               <div class="panel-body">
-                
+
                 <dt class="col-sm-12"><h2><?= $buku['judul'] ?></h2></dt>
                 <dt class="col-sm-3">Judul</dt>
                 <dd class="col-sm-9"><?= $buku['judul'] ?></dd>
@@ -130,35 +146,94 @@ $query_kategori = mysqli_query($conn,"SELECT * FROM kategori");
                 <dt class="col-sm-3">Sinopsis</dt>
                 <dd class="col-sm-9"><?= $buku['sinopsis'] ?></dd>
 
-              </div>
-            </div>
-          </div>
-          <?php else: ?>
-            <?php foreach ($query_buku as $buku): ?>
-              <div class="col-sm-3">
-                <div class="panel panel-primary">
-                  <div class="panel-body">
-                    <img src="uploads/<?= $buku['cover'] ?>" class="img-responsive" style="width:100%" alt="Image">
-                    <h4><?= $buku['judul'] ?></h4>
-                    <a href="index.php?detail=<?= $buku['id_buku'] ?>" class="btn btn-success"><i class="fa fa-eye"></i> DETAIL</a>
-                  </div>
 
+                <?php if ($_SESSION['akses_level'] == 'admin'): ?>
+                  <?php $query_peminjaman = mysqli_query($conn,"SELECT * FROM peminjaman JOIN tamu ON tamu.id_tamu = peminjaman.tamu WHERE buku = '$id_buku' ORDER BY tanggal_pinjam DESC ") ?>
+                  <?php $peminjaman_terakhir = mysqli_fetch_assoc($query_peminjaman) ?>
+                  <div class="col-sm-12">
+                    <hr>
+                    <h3>Rwayat Peminjaman</h3>
+                    <table class="table table-bordered table-striped">
+                      <tr>
+                        <th>Tanggal</th>
+                        <th>Peminjam</th>
+                        <th>Lama Pinjaman</th>
+                        <th>Kembali</th>
+                      </tr>
+                      <?php foreach ($query_peminjaman as $peminjaman): ?>
+                        <tr>
+                          <td><?= $peminjaman['tanggal_pinjam'] ?></td>
+                          <td><?= $peminjaman['nama'] ?></td>
+                          <td><?= $peminjaman['lama_pinjaman'] ?></td>
+                          <td><?= $peminjaman['tanggal_kembali'] ?></td>
+                        </tr>
+                      <?php endforeach ?>
+                    </table>
+                  </div>
+                  <?php $tamu_query = mysqli_query($conn,"SELECT * FROM tamu") ?>
+                  <div class="col-sm-6">
+                    <hr>
+                    <h3>Input Peminjaman</h3>
+                    <?php if ($peminjaman_terakhir['tanggal_kembali'] OR empty($peminjaman_terakhir)): ?>
+                      <form method="post">
+                        <input type="hidden" name="buku" value="<?= $buku['id_buku'] ?>">
+                        <div class="form-group">
+                          <label>Peminjam</label>
+                          <select name="tamu" class="form-control" required>
+                            <?php foreach ($tamu_query as $tamu): ?>
+                              <option value="<?= $tamu['id_tamu'] ?>"><?= $tamu['nama'] ?></option>
+                            <?php endforeach ?>
+                          </select>
+                        </div>
+                        <div class="form-group">
+                          <label>Tanggal Pinjam</label>
+                          <input type="date" name="tanggal_pinjam" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                          <label>Lama Peminjaman (hari)</label>
+                          <input type="number" name="lama_pinjaman" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                          <label>Ketearangan</label>
+                          <textarea name="keterangan_peminjaman" class="form-control"></textarea>
+                        </div>
+                        <button class="btn btn-primary" type="submit" name="submit_peminjaman">Submit</button>
+                      </form>
+                    </div>
+                    <?php else: ?>
+                      <div class="alert alert-danger">Buku Belum dikembalikan, Jika sudah di kembalikan edit <a href="admin/peminjaman.php">DISINI</a></div>
+                    <?php endif ?>
+
+                  <?php endif ?>
                 </div>
               </div>
-            <?php endforeach ?>
-          <?php endif ?>
+            </div>
+            <?php else: ?>
+              <?php foreach ($query_buku as $buku): ?>
+                <div class="col-sm-3">
+                  <div class="panel panel-primary">
+                    <div class="panel-body">
+                      <img src="uploads/<?= $buku['cover'] ?>" class="img-responsive" style="width:100%" alt="Image">
+                      <h4><?= $buku['judul'] ?></h4>
+                      <a href="index.php?detail=<?= $buku['id_buku'] ?>" class="btn btn-success"><i class="fa fa-eye"></i> DETAIL</a>
+                    </div>
 
-        </div>
-      </div><br>
+                  </div>
+                </div>
+              <?php endforeach ?>
+            <?php endif ?>
+
+          </div>
+        </div><br>
 
 
-      <footer class="container-fluid text-center">
-        <p>Online Store Copyright</p>  
-        <form class="form-inline">Get deals:
-          <input type="email" class="form-control" size="50" placeholder="Email Address">
-          <button type="button" class="btn btn-danger">Sign Up</button>
-        </form>
-      </footer>
+        <footer class="container-fluid text-center">
+          <p>Online Store Copyright</p>  
+          <form class="form-inline">Get deals:
+            <input type="email" class="form-control" size="50" placeholder="Email Address">
+            <button type="button" class="btn btn-danger">Sign Up</button>
+          </form>
+        </footer>
 
-    </body>
-    </html>
+      </body>
+      </html>
