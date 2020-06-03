@@ -1,6 +1,6 @@
 <?php
 session_start();
-if ($_SESSION['akses_level']) {
+if (isset($_SESSION['akses_level'])) {
   header('Location: index.php');
 }
 require '../include/database.php';
