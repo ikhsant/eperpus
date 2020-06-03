@@ -91,7 +91,7 @@ if (isset($_POST['submit'])) {
     <div class="col-sm-6">
       <div class="panel panel-primary">
         <div class="panel-body">
-          <?php if ($_SESSION['isiBukuTamu']): ?>
+          <?php if (isset($_SESSION['isiBukuTamu'])): ?>
             <h3>Terimakasih. Anda Sudah mengisi Buku Tamu!!</h3>
           <?php else: ?>
           <form method="post">
@@ -118,11 +118,7 @@ if (isset($_POST['submit'])) {
 
 
 <footer class="container-fluid text-center">
-  <p>Online Store Copyright</p>  
-  <form class="form-inline">Get deals:
-    <input type="email" class="form-control" size="50" placeholder="Email Address">
-    <button type="button" class="btn btn-danger">Sign Up</button>
-  </form>
+  <p>Copyright @2020 E-PERPUS</p>  
 </footer>
 
 </body>

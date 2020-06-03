@@ -147,7 +147,7 @@ if (isset($_POST['submit_peminjaman'])) {
                 <dd class="col-sm-9"><?= $buku['sinopsis'] ?></dd>
 
 
-                <?php if ($_SESSION['akses_level'] == 'admin'): ?>
+                <?php if (isset($_SESSION['akses_level'])): ?>
                   <?php $query_peminjaman = mysqli_query($conn,"SELECT * FROM peminjaman JOIN tamu ON tamu.id_tamu = peminjaman.tamu WHERE buku = '$id_buku' ORDER BY tanggal_pinjam DESC ") ?>
                   <?php $peminjaman_terakhir = mysqli_fetch_assoc($query_peminjaman) ?>
                   <div class="col-sm-12">
@@ -227,13 +227,9 @@ if (isset($_POST['submit_peminjaman'])) {
         </div><br>
 
 
-        <footer class="container-fluid text-center">
-          <p>Online Store Copyright</p>  
-          <form class="form-inline">Get deals:
-            <input type="email" class="form-control" size="50" placeholder="Email Address">
-            <button type="button" class="btn btn-danger">Sign Up</button>
-          </form>
-        </footer>
+<footer class="container-fluid text-center">
+  <p>Copyright @2020 E-PERPUS</p>  
+</footer>
 
       </body>
       </html>
