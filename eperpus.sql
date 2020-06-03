@@ -1,14 +1,13 @@
 -- phpMyAdmin SQL Dump
--- version 4.8.0.1
+-- version 5.0.2
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: May 23, 2020 at 06:09 AM
--- Server version: 10.1.32-MariaDB
--- PHP Version: 7.2.5
+-- Generation Time: Jun 03, 2020 at 11:57 AM
+-- Server version: 10.4.11-MariaDB
+-- PHP Version: 7.4.6
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
-SET AUTOCOMMIT = 0;
 START TRANSACTION;
 SET time_zone = "+00:00";
 
@@ -48,7 +47,8 @@ CREATE TABLE `buku` (
 --
 
 INSERT INTO `buku` (`id_buku`, `judul`, `kategori`, `pengarang`, `tahun`, `edisi`, `sinopsis`, `penerbit`, `status`, `label`, `rak`, `cover`) VALUES
-(1, 'Buku1', 1, 2, '2020', '1', 'https://ieeexplore.ieee.org/abstract/document/8311741', 'Surya Kencana', '', '', 1, '2r5f69dyjp2c8skosc.png');
+(1, 'Happy Parenting : Without Spanking Or', 1, 2, '2020', '1', 'https://ieeexplore.ieee.org/abstract/document/8311741', 'Surya Kencana', '', '', 1, 'ylb5pw07wpw4wc88cs.jpg'),
+(2, 'Segala-galanya Ambyar', 2, 2, '2020', '1', 'Apakah kamu merasa kecewa dengan hidupmu? Apakah kamu merasa cemas secara terus-menerus? Apakah kamu merasa bahwa dunia di sekelilingmu buruk dan jahat?\nYa, dunia ini memang kacau, dunia ini memang ambyar, tapi itu karena Anda tidak sadar bahwa harapan Anda terlalu disilaukan oleh keinginan-keinginan Anda sendiri yang tidak masuk akal.\n\nJadi, lepaskanlah harapan - harapan itu, jika Anda ingin waras!\n#AmbyarkanHarapan untuk hidup yang lebih tenang.', '', '', '', 1, 'rxw16nmbw3k4w8884.jpg');
 
 -- --------------------------------------------------------
 
@@ -67,7 +67,8 @@ CREATE TABLE `kategori` (
 --
 
 INSERT INTO `kategori` (`id_kategori`, `nama_kategori`, `keterangan_kategori`) VALUES
-(1, 'Fiksi', '');
+(1, 'Fiksi', ''),
+(2, 'Hiburan', '');
 
 -- --------------------------------------------------------
 
@@ -248,13 +249,13 @@ ALTER TABLE `user`
 -- AUTO_INCREMENT for table `buku`
 --
 ALTER TABLE `buku`
-  MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_buku` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `kategori`
 --
 ALTER TABLE `kategori`
-  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id_kategori` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `peminjaman`
@@ -278,7 +279,7 @@ ALTER TABLE `rak`
 -- AUTO_INCREMENT for table `tamu`
 --
 ALTER TABLE `tamu`
-  MODIFY `id_tamu` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_tamu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `user`
