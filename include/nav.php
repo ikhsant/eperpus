@@ -17,6 +17,7 @@
                         <a href="pengarang.php" class="list-group-item"><i class="fa fa-user fa-fw"></i> Pengarang</a>
                         <a href="rak.php" class="list-group-item"><i class="fa fa-bookmark fa-fw"></i> Rak</a>
                         <a href="peminjaman.php" class="list-group-item"><i class="fa fa-bookmark fa-fw"></i> Peminjaman</a>
+                        <a href="notif.php" class="list-group-item"><i class="fa fa-bookmark fa-fw"></i> Notifikasi</a>
                         <a href="setting.php" class="list-group-item"><span class="glyphicon glyphicon-cog fa-fw"></span> Setting</a>
                     <?php  } ?>
 
