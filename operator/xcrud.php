@@ -10,7 +10,7 @@
 
 // debug enabled, great for debug and development, you can remove this two lines for production app
 error_reporting(E_ALL); // error reporting (debug)
-ini_set('display_errors', 'Off'); // error showing (debug)
+ini_set('display_errors', 'On'); // error showing (debug)
 
 // direct access to DB driver and config
 define('XCRUD_PATH', str_replace('\\', '/', dirname(__file__))); // str_replace - windows trick

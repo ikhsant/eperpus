@@ -17,20 +17,52 @@ $query_buku = mysqli_query($conn,"
   SELECT * FROM buku 
   JOIN kategori ON buku.kategori = kategori.id_kategori 
   JOIN pengarang ON buku.pengarang = pengarang.id_pengarang
+  JOIN rak ON rak.id_rak = buku.rak
   $where");
 
 $query_kategori = mysqli_query($conn,"SELECT * FROM kategori");
 
+$query_peminjaman = mysqli_query($conn,"SELECT * FROM peminjaman JOIN tamu ON tamu.id_tamu = peminjaman.tamu WHERE buku = '$id_buku' ORDER BY tanggal_pinjam DESC ");
+
+$peminjaman_terakhir = mysqli_fetch_assoc($query_peminjaman);
+
 if (isset($_POST['submit_peminjaman'])) {
-  $tamu                  = $_POST['tamu'];
+  $id_tamu               = $_POST['tamu'];
+  $detail_tamu           = mysqli_fetch_assoc(mysqli_query($conn,"SELECT * FROM tamu WHERE id_tamu = '$id_tamu' "));
+  $tamu                  = $id_tamu;
   $buku                  = $_POST['buku'];
   $tanggal_pinjam        = $_POST['tanggal_pinjam'];
-  $lama_pinjaman         = $_POST['lama_pinjaman'];
+  $jatuh_tempo           = $_POST['jatuh_tempo'];
   $keterangan_peminjaman = $_POST['keterangan_peminjaman'];
 
-  mysqli_query($conn,"INSERT INTO peminjaman (tamu,buku,tanggal_pinjam,lama_pinjaman,keterangan_peminjaman) VALUES ('$tamu','$buku','$tanggal_pinjam','$lama_pinjaman','$keterangan_peminjaman') ");
+  mysqli_query($conn,"INSERT INTO peminjaman (tamu,buku,tanggal_pinjam,jatuh_tempo,keterangan_peminjaman) VALUES ('$tamu','$buku','$tanggal_pinjam','$jatuh_tempo','$keterangan_peminjaman') ");
 
-  header('Location: index.php?detail='.$id_buku);
+  // whatsapp api
+    $curl = curl_init();
+    $token = "gis0SeZtBRQP1CeMSjACvfe4jnJDu1E4y2131438qjOVoyBe7JZCDCYPDwGHMwkt";
+    $data = [
+        'phone' => $detail_tamu['hp'],
+        'message' => 'Hari ini pengembalian buku ke perpustakaan ya',
+        'date' => $jatuh_tempo,
+        'time' => '16:20',
+    ];
+
+    curl_setopt($curl, CURLOPT_HTTPHEADER,
+        array(
+            "Authorization: $token",
+        )
+    );
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "POST");
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, http_build_query($data));
+    curl_setopt($curl, CURLOPT_URL, "https://ampel.wablas.com/api/schedule");
+    curl_setopt($curl, CURLOPT_SSL_VERIFYHOST, 0);
+    curl_setopt($curl, CURLOPT_SSL_VERIFYPEER, 0);
+    // $result = curl_exec($curl);
+    curl_exec($curl);
+    curl_close($curl);
+
+    header('Location: index.php?detail='.$id_buku);
 }
 
 ?>
@@ -125,6 +157,7 @@ if (isset($_POST['submit_peminjaman'])) {
               <div class="panel-body">
 
                 <dt class="col-sm-12"><h2><?= $buku['judul'] ?></h2></dt>
+
                 <dt class="col-sm-3">Judul</dt>
                 <dd class="col-sm-9"><?= $buku['judul'] ?></dd>
 
@@ -135,21 +168,30 @@ if (isset($_POST['submit_peminjaman'])) {
                 <dd class="col-sm-9"><?= $buku['nama_pengarang'] ?></dd>
 
                 <dt class="col-sm-3">Tahun</dt>
-                <dd class="col-sm-9"><?= $buku['tahun'] ?></dd>
+                <dd class="col-sm-9"><?= $buku['tahun'] ?> </dd>
 
                 <dt class="col-sm-3">Edisi</dt>
-                <dd class="col-sm-9"><?= $buku['edisi'] ?></dd>
+                <dd class="col-sm-9"><?= $buku['edisi'] ?> </dd>
 
                 <dt class="col-sm-3">Penerbit</dt>
-                <dd class="col-sm-9"><?= $buku['penerbit'] ?></dd>
+                <dd class="col-sm-9"><?= $buku['penerbit'] ?> </dd>
 
+                <dt class="col-sm-3">Status</dt>
+                <dd class="col-sm-9">
+                  <?php $status_buku = mysqli_fetch_assoc($query_peminjaman)['tanggal_kembali'] ?>
+                  <?php if ($status_buku): ?>
+                    <span class="label label-success">Tersedia</span>
+                  <?php else: ?>
+                    <span class="label label-danger">Dipinjam</span>
+                  <?php endif ?>
+                </dd>
+                <br>
                 <dt class="col-sm-3">Sinopsis</dt>
                 <dd class="col-sm-9"><?= $buku['sinopsis'] ?></dd>
 
 
                 <?php if (isset($_SESSION['akses_level'])): ?>
-                  <?php $query_peminjaman = mysqli_query($conn,"SELECT * FROM peminjaman JOIN tamu ON tamu.id_tamu = peminjaman.tamu WHERE buku = '$id_buku' ORDER BY tanggal_pinjam DESC ") ?>
-                  <?php $peminjaman_terakhir = mysqli_fetch_assoc($query_peminjaman) ?>
+
                   <div class="col-sm-12">
                     <hr>
                     <h3>Rwayat Peminjaman</h3>
@@ -164,7 +206,7 @@ if (isset($_POST['submit_peminjaman'])) {
                         <tr>
                           <td><?= $peminjaman['tanggal_pinjam'] ?></td>
                           <td><?= $peminjaman['nama'] ?></td>
-                          <td><?= $peminjaman['lama_pinjaman'] ?></td>
+                          <td><?= $peminjaman['jatuh_tempo'] ?></td>
                           <td><?= $peminjaman['tanggal_kembali'] ?></td>
                         </tr>
                       <?php endforeach ?>
@@ -190,9 +232,8 @@ if (isset($_POST['submit_peminjaman'])) {
                           <input type="date" name="tanggal_pinjam" class="form-control" required>
                         </div>
                         <div class="form-group">
-                          <label>Lama Peminjaman (hari)</label>
-                          <input type="number" name="lama_pinjaman" class="form-control" required>
-                        </div>
+                          <label>Jatuh Tempo</label>
+                              <input type="date" name="jatuh_tempo" class="form-control" required>
                         <div class="form-group">
                           <label>Ketearangan</label>
                           <textarea name="keterangan_peminjaman" class="form-control"></textarea>
@@ -227,9 +268,9 @@ if (isset($_POST['submit_peminjaman'])) {
         </div><br>
 
 
-<footer class="container-fluid text-center">
-  <p>Copyright @2020 E-PERPUS</p>  
-</footer>
+        <footer class="container-fluid text-center">
+          <p>Copyright @2020 E-PERPUS</p>  
+        </footer>
 
       </body>
       </html>

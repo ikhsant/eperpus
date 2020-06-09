@@ -5,11 +5,12 @@ session_start();
 $query_kategori = mysqli_query($conn,"SELECT * FROM kategori");
 
 if (isset($_POST['submit'])) {
-  $nama = $_POST['nama'];
-  $kelas = $_POST['kelas'];
+  $nama              = $_POST['nama'];
+  $kelas             = $_POST['kelas'];
+  $hp                = $_POST['hp'];
   $tanggal_kunjungan = $_POST['tanggal_kunjungan'];
 
-  mysqli_query($conn,"INSERT INTO tamu (nama,kelas,tanggal_kunjungan) VALUES ('$nama','$kelas','$tanggal_kunjungan') ");
+  mysqli_query($conn,"INSERT INTO tamu (nama,kelas,tanggal_kunjungan,hp) VALUES ('$nama','$kelas','$tanggal_kunjungan','$hp') ");
 
   $_SESSION['isiBukuTamu'] = true;
 
@@ -98,6 +99,10 @@ if (isset($_POST['submit'])) {
             <div class="form-group">
               <label>NAMA</label>
               <input type="text" name="nama" class="form-control" required>
+            </div>
+            <div class="form-group">
+              <label>No.Whatsapp</label>
+              <input type="number" name="hp" class="form-control" required>
             </div>
             <div class="form-group">
               <label>KELAS</label>

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 03, 2020 at 02:09 PM
+-- Generation Time: Jun 09, 2020 at 10:43 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -82,7 +82,7 @@ CREATE TABLE `peminjaman` (
   `buku` int(11) NOT NULL,
   `tanggal_pinjam` date NOT NULL,
   `tanggal_kembali` date DEFAULT NULL,
-  `lama_pinjaman` int(11) NOT NULL,
+  `jatuh_tempo` date NOT NULL,
   `denda` int(11) DEFAULT NULL,
   `keterangan_peminjaman` text DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -91,9 +91,8 @@ CREATE TABLE `peminjaman` (
 -- Dumping data for table `peminjaman`
 --
 
-INSERT INTO `peminjaman` (`id_peminjaman`, `tamu`, `buku`, `tanggal_pinjam`, `tanggal_kembali`, `lama_pinjaman`, `denda`, `keterangan_peminjaman`) VALUES
-(3, 4, 1, '2020-06-03', '2020-06-04', 2, 100000, 'Keperluan Skripsi'),
-(4, 5, 1, '2020-06-04', NULL, 3, NULL, 'fasfasf');
+INSERT INTO `peminjaman` (`id_peminjaman`, `tamu`, `buku`, `tanggal_pinjam`, `tanggal_kembali`, `jatuh_tempo`, `denda`, `keterangan_peminjaman`) VALUES
+(7, 7, 2, '2020-06-01', NULL, '2020-06-03', NULL, 'read');
 
 -- --------------------------------------------------------
 
@@ -163,6 +162,7 @@ INSERT INTO `setting` (`id`, `nama_website`, `logo`, `alamat`, `deskripsi`, `the
 CREATE TABLE `tamu` (
   `id_tamu` int(11) NOT NULL,
   `nama` varchar(255) NOT NULL,
+  `hp` varchar(255) NOT NULL,
   `kelas` varchar(255) NOT NULL,
   `tanggal_kunjungan` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
@@ -171,9 +171,10 @@ CREATE TABLE `tamu` (
 -- Dumping data for table `tamu`
 --
 
-INSERT INTO `tamu` (`id_tamu`, `nama`, `kelas`, `tanggal_kunjungan`) VALUES
-(4, 'YULIANI PUTRI', 'ts19a', '2020-06-03 13:09:19'),
-(5, 'ADE ABDULLAH', 'ts19a', '2020-06-03 13:59:15');
+INSERT INTO `tamu` (`id_tamu`, `nama`, `hp`, `kelas`, `tanggal_kunjungan`) VALUES
+(4, 'YULIANI PUTRI', '', 'ts19a', '2020-06-03 13:09:19'),
+(5, 'ADE ABDULLAH', '', 'ts19a', '2020-06-03 13:59:15'),
+(7, 'EIZAN', '081615399070', 'SI', '2020-06-03 16:05:40');
 
 -- --------------------------------------------------------
 
@@ -277,7 +278,7 @@ ALTER TABLE `kategori`
 -- AUTO_INCREMENT for table `peminjaman`
 --
 ALTER TABLE `peminjaman`
-  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id_peminjaman` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `pengarang`
@@ -295,7 +296,7 @@ ALTER TABLE `rak`
 -- AUTO_INCREMENT for table `tamu`
 --
 ALTER TABLE `tamu`
-  MODIFY `id_tamu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `id_tamu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
 
 --
 -- AUTO_INCREMENT for table `user`
