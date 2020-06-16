@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 09, 2020 at 10:43 PM
+-- Generation Time: Jun 16, 2020 at 02:15 PM
 -- Server version: 10.4.11-MariaDB
 -- PHP Version: 7.4.6
 
@@ -174,7 +174,8 @@ CREATE TABLE `tamu` (
 INSERT INTO `tamu` (`id_tamu`, `nama`, `hp`, `kelas`, `tanggal_kunjungan`) VALUES
 (4, 'YULIANI PUTRI', '', 'ts19a', '2020-06-03 13:09:19'),
 (5, 'ADE ABDULLAH', '', 'ts19a', '2020-06-03 13:59:15'),
-(7, 'EIZAN', '081615399070', 'SI', '2020-06-03 16:05:40');
+(7, 'EIZAN', '081615399070', 'SI', '2020-06-03 16:05:40'),
+(8, 'YULIANI PUTRI', '085795367014', 'fasfasfasf', '2020-06-16 14:14:45');
 
 -- --------------------------------------------------------
 
@@ -296,7 +297,7 @@ ALTER TABLE `rak`
 -- AUTO_INCREMENT for table `tamu`
 --
 ALTER TABLE `tamu`
-  MODIFY `id_tamu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id_tamu` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT for table `user`
