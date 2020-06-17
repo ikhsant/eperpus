@@ -13,7 +13,7 @@ if (isset($_GET['kategori'])) {
   // peminjaman
   $query_peminjaman = mysqli_query($conn,"SELECT * FROM peminjaman JOIN tamu ON tamu.id_tamu = peminjaman.tamu WHERE buku = '$id_buku' ORDER BY tanggal_pinjam DESC ");
   $peminjaman_terakhir = mysqli_fetch_assoc($query_peminjaman);
-  
+
 }else{
   $where = '';
 }
@@ -177,7 +177,10 @@ if (isset($_POST['submit_peminjaman'])) {
                 <dd class="col-sm-9"><?= $buku['edisi'] ?> </dd>
 
                 <dt class="col-sm-3">Penerbit</dt>
-                <dd class="col-sm-9"><?= $buku['penerbit'] ?> </dd>
+                <dd class="col-sm-9"><?= $buku['penerbit'] ?> <br></dd>
+
+                <dt class="col-sm-3">RAK</dt>
+                <dd class="col-sm-9"><?= $buku['nama_rak'] ?> </dd>
 
                 <dt class="col-sm-3">Status</dt>
                 <dd class="col-sm-9">
