@@ -178,11 +178,17 @@ if (isset($_POST['submit_peminjaman'])) {
 
                 <dt class="col-sm-3">Status</dt>
                 <dd class="col-sm-9">
-                  <?php $status_buku = mysqli_fetch_assoc($query_peminjaman)['tanggal_kembali'] ?>
-                  <?php if ($status_buku): ?>
-                    <span class="label label-success">Tersedia</span>
+                  <?= $peminjaman_terakhir['tanggal_pinjam'] ?>
+                  <?php if ($peminjaman_terakhir): ?>
+
+                    <?php if ($peminjaman_terakhir['tanggal_kembali']): ?>
+                      <span class="label label-success">Tersedia</span>
+                    <?php else: ?>
+                      <span class="label label-danger">Dipinjam</span>
+                    <?php endif ?>
+
                   <?php else: ?>
-                    <span class="label label-danger">Dipinjam</span>
+                    <span class="label label-success">Tersedia</span>
                   <?php endif ?>
                 </dd>
                 <br>
