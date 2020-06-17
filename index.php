@@ -9,6 +9,11 @@ if (isset($_GET['kategori'])) {
 }elseif(isset($_GET['detail'])){
   $id_buku = $_GET['detail'];
   $where = "WHERE buku.id_buku = '$id_buku' ";
+
+  // peminjaman
+  $query_peminjaman = mysqli_query($conn,"SELECT * FROM peminjaman JOIN tamu ON tamu.id_tamu = peminjaman.tamu WHERE buku = '$id_buku' ORDER BY tanggal_pinjam DESC ");
+  $peminjaman_terakhir = mysqli_fetch_assoc($query_peminjaman);
+  
 }else{
   $where = '';
 }
@@ -22,9 +27,7 @@ $query_buku = mysqli_query($conn,"
 
 $query_kategori = mysqli_query($conn,"SELECT * FROM kategori");
 
-$query_peminjaman = mysqli_query($conn,"SELECT * FROM peminjaman JOIN tamu ON tamu.id_tamu = peminjaman.tamu WHERE buku = '$id_buku' ORDER BY tanggal_pinjam DESC ");
 
-$peminjaman_terakhir = mysqli_fetch_assoc($query_peminjaman);
 
 if (isset($_POST['submit_peminjaman'])) {
   $id_tamu               = $_POST['tamu'];
